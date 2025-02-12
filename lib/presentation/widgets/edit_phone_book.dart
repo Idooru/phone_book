@@ -40,18 +40,21 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
   void initState() {
     super.initState();
 
-    widget.nameController.addListener(() => validate(nameValidator));
-    widget.phoneController.addListener(() => validate(phoneValidator));
-    widget.emailController.addListener(() => validate(emailValidator));
+    widget.nameController.addListener(() => validate(validator: nameValidator, controller: widget.nameController));
+    widget.phoneController.addListener(() => validate(validator: phoneValidator, controller: widget.phoneController));
+    widget.emailController.addListener(() => validate(validator: emailValidator, controller: widget.emailController));
 
     nameValidator = Validator(strategy: NameValidatorStrategy());
     phoneValidator = Validator(strategy: PhoneValidatorStrategy());
     emailValidator = Validator(strategy: EmailValidatorStrategy());
   }
 
-  void validate(Validator validator) {
+  void validate({
+    required Validator validator,
+    required TextEditingController controller,
+  }) {
     setState(() {
-      validator.isInvalid = validator.strategy.isInvalid(widget.nameController.text, widget.allUser, widget.currentUser);
+      validator.isInvalid = validator.strategy.isInvalid(controller.text, widget.allUser, widget.currentUser);
       validator.error = validator.strategy.getError();
     });
 
