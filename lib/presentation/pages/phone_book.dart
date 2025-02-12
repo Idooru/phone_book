@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phone_book/data/user.dart';
+import 'package:phone_book/domain/entities/user.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:phone_book/presentation/widgets/edit_phone_book.dart';
 import 'package:provider/provider.dart';

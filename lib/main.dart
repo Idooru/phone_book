@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phone_book/state/phonebook_provider.dart';
-import 'package:phone_book/widgets/phone_book.dart';
+import 'package:phone_book/presentation/state/phonebook_provider.dart';
+import 'package:phone_book/presentation/pages/phone_book.dart';
 import 'package:provider/provider.dart';
 
 void main() {

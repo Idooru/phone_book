@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:phone_book/data/user.dart';
-import 'package:phone_book/data/validator.dart';
+import 'package:phone_book/core/validators/email_validator.dart';
+import 'package:phone_book/core/validators/name_validator.dart';
+import 'package:phone_book/core/validators/phone_validator.dart';
+import 'package:phone_book/domain/entities/user.dart';
+import 'package:phone_book/domain/entities/validator.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -36,107 +39,20 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
   @override
   void initState() {
     super.initState();
-    widget.nameController.addListener(validateName);
-    widget.phoneController.addListener(validatePhone);
-    widget.emailController.addListener(validateEmail);
 
-    nameValidator = Validator(category: Category.name);
-    phoneValidator = Validator(category: Category.phone);
-    emailValidator = Validator(category: Category.email);
+    widget.nameController.addListener(() => validate(nameValidator));
+    widget.phoneController.addListener(() => validate(phoneValidator));
+    widget.emailController.addListener(() => validate(emailValidator));
+
+    nameValidator = Validator(strategy: NameValidatorStrategy());
+    phoneValidator = Validator(strategy: PhoneValidatorStrategy());
+    emailValidator = Validator(strategy: EmailValidatorStrategy());
   }
 
-  void validateName() {
-    String name = widget.nameController.text;
-
-    bool isDuplicatedName(String name) {
-      List<User> remainUsers = widget.allUser.where((User user) => user.name != widget.currentUser.name).toList();
-      return remainUsers.any((User user) => user.name == name);
-    }
-
+  void validate(Validator validator) {
     setState(() {
-      if (name.isEmpty) {
-        nameValidator.isInvalid = true;
-        nameValidator.error = "이름이 비어있어요";
-      } else if (name.length > 4) {
-        nameValidator.isInvalid = true;
-        nameValidator.error = "이름 길이가 너무 길어요";
-      } else if (isDuplicatedName(name)) {
-        nameValidator.isInvalid = true;
-        nameValidator.error = "이름이 중복되었어요";
-      } else {
-        nameValidator.isInvalid = false;
-        nameValidator.error = null;
-      }
-    });
-
-    validateSubmitable();
-  }
-
-  void validatePhone() {
-    String phone = widget.phoneController.text;
-
-    bool isDuplicatedPhone(String phone) {
-      List<User> remainUsers = widget.allUser.where((User user) => user.phone != widget.currentUser.phone).toList();
-      return remainUsers.any((User user) => user.phone == phone);
-    }
-
-    bool isValidPhone(String phone) {
-      final RegExp phoneRegex = RegExp(r'^[0-9]+$');
-      return phoneRegex.hasMatch(phone);
-    }
-
-    setState(() {
-      if (phone.isEmpty) {
-        phoneValidator.isInvalid = true;
-        phoneValidator.error = "전화번호가 비어있어요";
-      } else if (phone.length > 11) {
-        phoneValidator.isInvalid = true;
-        phoneValidator.error = "전화번호 길이가 너무 길어요";
-      } else if (!isValidPhone(phone)) {
-        phoneValidator.isInvalid = true;
-        phoneValidator.error = "숫자만 입력해주세요";
-      } else if (isDuplicatedPhone(phone)) {
-        phoneValidator.isInvalid = true;
-        phoneValidator.error = "전화번호가 중복되었어요";
-      } else {
-        phoneValidator.isInvalid = false;
-        phoneValidator.error = null;
-      }
-    });
-
-    validateSubmitable();
-  }
-
-  void validateEmail() {
-    String email = widget.emailController.text;
-
-    bool isDuplicatedEmail(String email) {
-      List<User> remainUsers = widget.allUser.where((User user) => user.email != widget.currentUser.email).toList();
-      return remainUsers.any((User user) => user.email == email);
-    }
-
-    bool isValidEmail(String email) {
-      final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-      return emailRegex.hasMatch(email);
-    }
-
-    setState(() {
-      if (email.isEmpty) {
-        emailValidator.isInvalid = true;
-        emailValidator.error = "이메일이 비어있어요";
-      } else if (email.length > 25) {
-        emailValidator.isInvalid = true;
-        emailValidator.error = "이메일 길이가 너무 길어요";
-      } else if (!isValidEmail(email)) {
-        emailValidator.isInvalid = true;
-        emailValidator.error = "이메일 형식을 갖춰주세요";
-      } else if (isDuplicatedEmail(email)) {
-        emailValidator.isInvalid = true;
-        emailValidator.error = "이메일이 중복되었어요";
-      } else {
-        emailValidator.isInvalid = false;
-        emailValidator.error = null;
-      }
+      validator.isInvalid = validator.strategy.isInvalid(widget.nameController.text, widget.allUser, widget.currentUser);
+      validator.error = validator.strategy.getError();
     });
 
     validateSubmitable();
