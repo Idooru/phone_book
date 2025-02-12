@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phone_book/domain/entities/user.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
+import 'package:phone_book/presentation/widgets/add_phone_book.dart';
 import 'package:phone_book/presentation/widgets/edit_phone_book.dart';
 import 'package:provider/provider.dart';
 
@@ -15,15 +16,22 @@ class PhoneBookState extends State<PhoneBookPage> {
   late List<User> users;
   late PhonebookProvider phonebookProvider;
 
+  void pressAdd() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AddPhoneBookDialog(allUser: users);
+      },
+    );
+  }
+
   void pressEdit(User user) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return EditPhoneBookDialog(
-          allUser: users,
-          currentUser: user,
-        );
+        return EditPhoneBookDialog(allUser: users, currentUser: user);
       },
     );
   }
@@ -69,6 +77,25 @@ class PhoneBookState extends State<PhoneBookPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("phone book"),
+      ),
+      floatingActionButton: Align(
+        alignment: Alignment(1.0, 1.07),
+        child: SizedBox(
+          width: 65,
+          height: 65,
+          child: FloatingActionButton(
+            backgroundColor: Colors.green[600],
+            shape: CircleBorder(),
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () {
+              pressAdd();
+            },
+          ),
+        ),
       ),
       body: ListView.separated(
         itemCount: users.length,

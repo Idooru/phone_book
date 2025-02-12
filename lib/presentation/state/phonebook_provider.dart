@@ -10,6 +10,11 @@ class PhonebookProvider extends ChangeNotifier {
 
   List<User> get users => _users;
 
+  void createUser(User newUser) {
+    _users = [..._users, newUser];
+    notifyListeners();
+  }
+
   void updateUsers(int index, User newUser) {
     _users[index] = newUser;
     notifyListeners();
