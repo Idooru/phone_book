@@ -101,47 +101,49 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
     return AlertDialog(
       title: Text("수정"),
       content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              style: TextStyle(fontSize: 15.0),
-              controller: nameController,
-              decoration: InputDecoration(
-                label: Text("Name"),
-                border: OutlineInputBorder(),
-                helperText: "이름을 입력하세요.",
-                counterText: "입력길이: ${nameController.text.length}",
-                errorText: nameValidator.isInvalid ? nameValidator.error : null,
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                style: TextStyle(fontSize: 15.0),
+                controller: nameController,
+                decoration: InputDecoration(
+                  label: Text("Name"),
+                  border: OutlineInputBorder(),
+                  helperText: "이름을 입력하세요.",
+                  counterText: "입력길이: ${nameController.text.length}",
+                  errorText: nameValidator.isInvalid ? nameValidator.error : null,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              style: TextStyle(fontSize: 15.0),
-              controller: phoneController,
-              decoration: InputDecoration(
-                label: Text("Phone"),
-                border: OutlineInputBorder(),
-                helperText: "전화번호를 입력하세요.",
-                counterText: "입력길이: ${phoneController.text.length}",
-                errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(fontSize: 15.0),
+                controller: phoneController,
+                decoration: InputDecoration(
+                  label: Text("Phone"),
+                  border: OutlineInputBorder(),
+                  helperText: "전화번호를 입력하세요.",
+                  counterText: "입력길이: ${phoneController.text.length}",
+                  errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              style: TextStyle(fontSize: 15.0),
-              controller: emailController,
-              decoration: InputDecoration(
-                label: Text("Email"),
-                border: OutlineInputBorder(),
-                helperText: "이메일을 입력하세요.",
-                counterText: "입력길이: ${emailController.text.length}",
-                errorText: emailValidator.isInvalid ? emailValidator.error : null,
+              SizedBox(height: 10),
+              TextField(
+                style: TextStyle(fontSize: 15.0),
+                controller: emailController,
+                decoration: InputDecoration(
+                  label: Text("Email"),
+                  border: OutlineInputBorder(),
+                  helperText: "이메일을 입력하세요.",
+                  counterText: "입력길이: ${emailController.text.length}",
+                  errorText: emailValidator.isInvalid ? emailValidator.error : null,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-          ],
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -151,7 +153,7 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 238, 238, 238),
-                fixedSize: Size(100, 40),
+                fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
               ),
               onPressed: () {
@@ -163,7 +165,7 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green[600],
-                fixedSize: Size(100, 40),
+                fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
               ),
               onPressed: isSubmitAble ? () => pressSubmit(widget.currentUser) : null,
