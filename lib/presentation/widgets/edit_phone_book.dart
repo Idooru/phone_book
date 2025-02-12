@@ -66,7 +66,7 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
     required List<User> Function(String) getRemainUsers,
   }) {
     setState(() {
-      validator.isInvalid = validator.strategy.isInvalid(controller.text, getRemainUsers(controller.text));
+      validator.isInvalid = validator.strategy.isInvalid(value: controller.text, users: getRemainUsers(controller.text));
       validator.error = validator.strategy.getError();
     });
 

@@ -6,7 +6,7 @@ class EmailValidatorStrategy implements ValidatorStrategy {
   final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
   @override
-  bool isInvalid(String value, List<User> users) {
+  bool isInvalid({required String value, required List<User> users}) {
     if (value.isEmpty) {
       _error = "이메일이 비어있어요";
       return true;

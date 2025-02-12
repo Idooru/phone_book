@@ -5,14 +5,14 @@ class NameValidatorStrategy implements ValidatorStrategy {
   String? _error;
 
   @override
-  bool isInvalid(String value, List<User> allUsers) {
+  bool isInvalid({required String value, required List<User> users}) {
     if (value.isEmpty) {
       _error = "이름이 비어있어요";
       return true;
     } else if (value.length > 4) {
       _error = "이름 길이가 너무 길어요";
       return true;
-    } else if (allUsers.any((user) => user.name == value)) {
+    } else if (users.any((user) => user.name == value)) {
       _error = "이름이 중복되었어요";
       return true;
     }
