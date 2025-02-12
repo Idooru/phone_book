@@ -6,7 +6,7 @@ class PhoneValidatorStrategy implements ValidatorStrategy {
   final RegExp phoneRegex = RegExp(r'^[0-9]+$');
 
   @override
-  bool isInvalid(String value, List<User> allUsers, User currentUser) {
+  bool isInvalid(String value, List<User> allUsers) {
     if (value.isEmpty) {
       _error = "전화번호가 비어있어요";
       return true;
@@ -16,7 +16,7 @@ class PhoneValidatorStrategy implements ValidatorStrategy {
     } else if (!phoneRegex.hasMatch(value)) {
       _error = "숫자만 입력해주세요";
       return true;
-    } else if (allUsers.any((user) => user.phone == value && user.phone != currentUser.phone)) {
+    } else if (allUsers.any((user) => user.phone == value)) {
       _error = "전화번호가 중복되었어요";
       return true;
     }

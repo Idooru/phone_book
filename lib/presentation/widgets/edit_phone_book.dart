@@ -38,25 +38,35 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
   void initState() {
     super.initState();
 
+    // 현재 사용자의 입력 정보를 edit 창에 표시
     nameController.text = widget.currentUser.name;
     phoneController.text = widget.currentUser.phone;
     emailController.text = widget.currentUser.email;
 
+    // 검증 전략 초기화
     nameValidator = Validator(strategy: NameValidatorStrategy());
     phoneValidator = Validator(strategy: PhoneValidatorStrategy());
     emailValidator = Validator(strategy: EmailValidatorStrategy());
 
-    nameController.addListener(() => validate(validator: nameValidator, controller: nameController));
-    phoneController.addListener(() => validate(validator: phoneValidator, controller: phoneController));
-    emailController.addListener(() => validate(validator: emailValidator, controller: emailController));
+    // 현재 입력된 정보를 검증 목록에서 제외 시킴
+    List<User> exclusiveNames(String name) => widget.allUser.where((User user) => user.name != widget.currentUser.name).toList();
+    List<User> exclusivePhones(String phone) => widget.allUser.where((User user) => user.phone != widget.currentUser.phone).toList();
+    List<User> exclusiveEmails(String email) => widget.allUser.where((User user) => user.email != widget.currentUser.email).toList();
+
+    // 각 컨트롤러 별로 입력 감지 이벤트를 등록 시킴
+    // 입력이 일어날 때마다 검증 validate 호출
+    nameController.addListener(() => validate(validator: nameValidator, controller: nameController, getRemainUsers: exclusiveNames));
+    phoneController.addListener(() => validate(validator: phoneValidator, controller: phoneController, getRemainUsers: exclusivePhones));
+    emailController.addListener(() => validate(validator: emailValidator, controller: emailController, getRemainUsers: exclusiveEmails));
   }
 
   void validate({
     required Validator validator,
     required TextEditingController controller,
+    required List<User> Function(String) getRemainUsers,
   }) {
     setState(() {
-      validator.isInvalid = validator.strategy.isInvalid(controller.text, widget.allUser, widget.currentUser);
+      validator.isInvalid = validator.strategy.isInvalid(controller.text, getRemainUsers(controller.text));
       validator.error = validator.strategy.getError();
     });
 

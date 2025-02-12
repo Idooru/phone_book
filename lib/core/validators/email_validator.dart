@@ -6,7 +6,7 @@ class EmailValidatorStrategy implements ValidatorStrategy {
   final RegExp emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
   @override
-  bool isInvalid(String value, List<User> allUsers, User currentUser) {
+  bool isInvalid(String value, List<User> users) {
     if (value.isEmpty) {
       _error = "이메일이 비어있어요";
       return true;
@@ -16,7 +16,7 @@ class EmailValidatorStrategy implements ValidatorStrategy {
     } else if (!emailRegex.hasMatch(value)) {
       _error = "이메일 형식을 갖춰주세요";
       return true;
-    } else if (allUsers.any((user) => user.email == value && user.email != currentUser.email)) {
+    } else if (users.any((user) => user.email == value)) {
       _error = "이메일이 중복되었어요";
       return true;
     }
