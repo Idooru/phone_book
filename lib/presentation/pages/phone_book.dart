@@ -12,18 +12,10 @@ class PhoneBookPage extends StatefulWidget {
 }
 
 class PhoneBookState extends State<PhoneBookPage> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-
   late List<User> users;
   late PhonebookProvider phonebookProvider;
 
   void pressEdit(User user) {
-    nameController.text = user.name;
-    phoneController.text = user.phone;
-    emailController.text = user.email;
-
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -31,9 +23,6 @@ class PhoneBookState extends State<PhoneBookPage> {
         return EditPhoneBookDialog(
           allUser: users,
           currentUser: user,
-          nameController: nameController,
-          phoneController: phoneController,
-          emailController: emailController,
         );
       },
     );

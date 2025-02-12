@@ -10,17 +10,11 @@ import 'package:provider/provider.dart';
 class EditPhoneBookDialog extends StatefulWidget {
   final List<User> allUser;
   final User currentUser;
-  final TextEditingController nameController;
-  final TextEditingController phoneController;
-  final TextEditingController emailController;
 
   const EditPhoneBookDialog({
     super.key,
     required this.allUser,
     required this.currentUser,
-    required this.nameController,
-    required this.phoneController,
-    required this.emailController,
   });
 
   @override
@@ -28,6 +22,10 @@ class EditPhoneBookDialog extends StatefulWidget {
 }
 
 class EditPhoneBookState extends State<EditPhoneBookDialog> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   late final Validator nameValidator;
   late final Validator phoneValidator;
   late final Validator emailValidator;
@@ -40,13 +38,17 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
   void initState() {
     super.initState();
 
-    widget.nameController.addListener(() => validate(validator: nameValidator, controller: widget.nameController));
-    widget.phoneController.addListener(() => validate(validator: phoneValidator, controller: widget.phoneController));
-    widget.emailController.addListener(() => validate(validator: emailValidator, controller: widget.emailController));
+    nameController.text = widget.currentUser.name;
+    phoneController.text = widget.currentUser.phone;
+    emailController.text = widget.currentUser.email;
 
     nameValidator = Validator(strategy: NameValidatorStrategy());
     phoneValidator = Validator(strategy: PhoneValidatorStrategy());
     emailValidator = Validator(strategy: EmailValidatorStrategy());
+
+    nameController.addListener(() => validate(validator: nameValidator, controller: nameController));
+    phoneController.addListener(() => validate(validator: phoneValidator, controller: phoneController));
+    emailController.addListener(() => validate(validator: emailValidator, controller: emailController));
   }
 
   void validate({
@@ -65,9 +67,9 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
     int index = widget.allUser.indexWhere((User userParam) => userParam.name == user.name);
 
     User newUser = User(
-      widget.nameController.text,
-      widget.phoneController.text,
-      widget.emailController.text,
+      nameController.text,
+      phoneController.text,
+      emailController.text,
     );
 
     phonebookProvider.updateUsers(index, newUser);
@@ -95,36 +97,36 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
           children: [
             TextField(
               style: TextStyle(fontSize: 15.0),
-              controller: widget.nameController,
+              controller: nameController,
               decoration: InputDecoration(
                 label: Text("Name"),
                 border: OutlineInputBorder(),
                 helperText: "이름을 입력하세요.",
-                counterText: "입력길이: ${widget.nameController.text.length}",
+                counterText: "입력길이: ${nameController.text.length}",
                 errorText: nameValidator.isInvalid ? nameValidator.error : null,
               ),
             ),
             SizedBox(height: 10),
             TextField(
               style: TextStyle(fontSize: 15.0),
-              controller: widget.phoneController,
+              controller: phoneController,
               decoration: InputDecoration(
                 label: Text("Phone"),
                 border: OutlineInputBorder(),
                 helperText: "전화번호를 입력하세요.",
-                counterText: "입력길이: ${widget.phoneController.text.length}",
+                counterText: "입력길이: ${phoneController.text.length}",
                 errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
               ),
             ),
             SizedBox(height: 10),
             TextField(
               style: TextStyle(fontSize: 15.0),
-              controller: widget.emailController,
+              controller: emailController,
               decoration: InputDecoration(
                 label: Text("Email"),
                 border: OutlineInputBorder(),
                 helperText: "이메일을 입력하세요.",
-                counterText: "입력길이: ${widget.emailController.text.length}",
+                counterText: "입력길이: ${emailController.text.length}",
                 errorText: emailValidator.isInvalid ? emailValidator.error : null,
               ),
             ),
