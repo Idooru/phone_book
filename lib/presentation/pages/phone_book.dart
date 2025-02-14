@@ -88,44 +88,36 @@ class PhoneBookPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Builder(builder: (context) {
-            debugPrint("빈 영역");
-            return Container();
-          }),
+          Container(height: 5, color: Colors.green),
           Expanded(
-            child: Builder(
-              builder: (context) {
-                debugPrint("사용자 정보 영역");
-                return Consumer<PhonebookProvider>(
-                  builder: (context, phonebook, child) {
-                    return ListView.separated(
-                      itemCount: phonebook.users.length,
-                      itemBuilder: (context, index) {
-                        User user = phonebook.users[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: AssetImage("images/big.jpeg"),
-                          ),
-                          title: Text(user.name),
-                          subtitle: Text(user.phone),
-                          trailing: IconButton(
-                            icon: Icon(Icons.more_vert),
-                            onPressed: () {
-                              pressTrailing(context, phonebook, user);
-                            },
-                          ),
-                          onTap: () {
-                            debugPrint("사용자 이름: ${user.name}");
-                          },
-                        );
+            child: Consumer<PhonebookProvider>(
+              builder: (BuildContext context, PhonebookProvider phonebook, Widget? child) {
+                return ListView.separated(
+                  itemCount: phonebook.users.length,
+                  itemBuilder: (context, index) {
+                    User user = phonebook.users[index];
+                    return ListTile(
+                      leading: CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage("images/big.jpeg"),
+                      ),
+                      title: Text(user.name),
+                      subtitle: Text(user.phone),
+                      trailing: IconButton(
+                        icon: Icon(Icons.more_vert),
+                        onPressed: () {
+                          pressTrailing(context, phonebook, user);
+                        },
+                      ),
+                      onTap: () {
+                        debugPrint("사용자 이름: ${user.name}");
                       },
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          height: 5,
-                          color: Colors.grey[300],
-                        );
-                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 5,
+                      color: Colors.grey[300],
                     );
                   },
                 );

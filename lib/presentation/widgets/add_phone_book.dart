@@ -28,8 +28,6 @@ class AddPhoneBookDialogState extends State<AddPhoneBookDialog> {
   late final Validator phoneValidator;
   late final Validator emailValidator;
 
-  late PhonebookProvider phonebookProvider;
-
   bool isSubmitAble = true;
 
   @override
@@ -62,14 +60,14 @@ class AddPhoneBookDialogState extends State<AddPhoneBookDialog> {
     validateSubmitable();
   }
 
-  void pressSubmit() {
+  void pressSubmit(PhonebookProvider phonebook) {
     User newUser = User(
       nameController.text,
       phoneController.text,
       emailController.text,
     );
 
-    phonebookProvider.createUser(newUser);
+    phonebook.createUser(newUser);
 
     Navigator.of(context).pop();
   }
@@ -82,83 +80,85 @@ class AddPhoneBookDialogState extends State<AddPhoneBookDialog> {
 
   @override
   Widget build(BuildContext context) {
-    phonebookProvider = context.watch<PhonebookProvider>();
-
-    return AlertDialog(
-      title: Text("생성"),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.7,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                style: TextStyle(fontSize: 15.0),
-                controller: nameController,
-                decoration: InputDecoration(
-                  label: Text("Name"),
-                  border: OutlineInputBorder(),
-                  helperText: "이름을 입력하세요.",
-                  counterText: "입력길이: ${nameController.text.length}",
-                  errorText: nameValidator.isInvalid ? nameValidator.error : null,
-                ),
+    return Consumer<PhonebookProvider>(
+      builder: (BuildContext context, PhonebookProvider phonebook, Widget? child) {
+        return AlertDialog(
+          title: Text("생성"),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    style: TextStyle(fontSize: 15.0),
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      label: Text("Name"),
+                      border: OutlineInputBorder(),
+                      helperText: "이름을 입력하세요.",
+                      counterText: "입력길이: ${nameController.text.length}",
+                      errorText: nameValidator.isInvalid ? nameValidator.error : null,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    style: TextStyle(fontSize: 15.0),
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      label: Text("Phone"),
+                      border: OutlineInputBorder(),
+                      helperText: "전화번호를 입력하세요.",
+                      counterText: "입력길이: ${phoneController.text.length}",
+                      errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    style: TextStyle(fontSize: 15.0),
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      label: Text("Email"),
+                      border: OutlineInputBorder(),
+                      helperText: "이메일을 입력하세요.",
+                      counterText: "입력길이: ${emailController.text.length}",
+                      errorText: emailValidator.isInvalid ? emailValidator.error : null,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
               ),
-              SizedBox(height: 10),
-              TextField(
-                style: TextStyle(fontSize: 15.0),
-                controller: phoneController,
-                decoration: InputDecoration(
-                  label: Text("Phone"),
-                  border: OutlineInputBorder(),
-                  helperText: "전화번호를 입력하세요.",
-                  counterText: "입력길이: ${phoneController.text.length}",
-                  errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                style: TextStyle(fontSize: 15.0),
-                controller: emailController,
-                decoration: InputDecoration(
-                  label: Text("Email"),
-                  border: OutlineInputBorder(),
-                  helperText: "이메일을 입력하세요.",
-                  counterText: "입력길이: ${emailController.text.length}",
-                  errorText: emailValidator.isInvalid ? emailValidator.error : null,
-                ),
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
-        ),
-      ),
-      actions: [
-        OverflowBar(
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 238, 238, 238),
-                fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("cancel", style: TextStyle(color: Colors.black)),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[600],
-                fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-              ),
-              onPressed: isSubmitAble ? () => pressSubmit() : null,
-              child: Text("submit", style: TextStyle(color: Colors.white)),
+          ),
+          actions: [
+            OverflowBar(
+              alignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 238, 238, 238),
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("cancel", style: TextStyle(color: Colors.black)),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[600],
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.3, 40),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                  onPressed: isSubmitAble ? () => pressSubmit(phonebook) : null,
+                  child: Text("submit", style: TextStyle(color: Colors.white)),
+                ),
+              ],
             ),
           ],
-        )
-      ],
+        );
+      },
     );
   }
 }

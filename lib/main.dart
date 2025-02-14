@@ -4,10 +4,16 @@ import 'package:phone_book/presentation/pages/phone_book.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (context) => PhonebookProvider())],
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PhonebookProvider(),
+        )
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
