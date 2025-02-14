@@ -37,15 +37,17 @@ class AddPhoneBookDialogState extends State<AddPhoneBookDialog> {
     super.initState();
 
     // 검증 전략 초기화
-    nameValidator = Validator(strategy: NameValidatorStrategy());
-    phoneValidator = Validator(strategy: PhoneValidatorStrategy());
-    emailValidator = Validator(strategy: EmailValidatorStrategy());
+    nameValidator = Validator(strategy: NameValidatorStrategy(), isInvalid: true);
+    phoneValidator = Validator(strategy: PhoneValidatorStrategy(), isInvalid: true);
+    emailValidator = Validator(strategy: EmailValidatorStrategy(), isInvalid: true);
 
     // 각 컨트롤러 별로 입력 감지 이벤트를 등록 시킴
     // 입력이 일어날 때마다 검증 validate 호출
     nameController.addListener(() => validate(validator: nameValidator, controller: nameController));
     phoneController.addListener(() => validate(validator: phoneValidator, controller: phoneController));
     emailController.addListener(() => validate(validator: emailValidator, controller: emailController));
+
+    validateSubmitable();
   }
 
   void validate({

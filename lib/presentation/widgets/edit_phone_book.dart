@@ -44,9 +44,9 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
     emailController.text = widget.currentUser.email;
 
     // 검증 전략 초기화
-    nameValidator = Validator(strategy: NameValidatorStrategy());
-    phoneValidator = Validator(strategy: PhoneValidatorStrategy());
-    emailValidator = Validator(strategy: EmailValidatorStrategy());
+    nameValidator = Validator(strategy: NameValidatorStrategy(), isInvalid: false);
+    phoneValidator = Validator(strategy: PhoneValidatorStrategy(), isInvalid: false);
+    emailValidator = Validator(strategy: EmailValidatorStrategy(), isInvalid: false);
 
     // 현재 입력된 정보를 검증 목록에서 제외 시킴
     List<User> exclusiveNames(String name) => widget.allUser.where((User user) => user.name != widget.currentUser.name).toList();

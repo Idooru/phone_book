@@ -7,7 +7,7 @@ class Validator {
 
   Validator({
     required this.strategy,
-    this.isInvalid = false,
+    required this.isInvalid,
     this.error,
   });
 }
