@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phone_book/core/validators/email_validator.dart';
 import 'package:phone_book/core/validators/name_validator.dart';
 import 'package:phone_book/core/validators/phone_validator.dart';
+import 'package:phone_book/core/widgets/custom_text_field.dart';
 import 'package:phone_book/domain/entities/user.dart';
 import 'package:phone_book/domain/entities/validator.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
@@ -104,40 +105,25 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
-                    style: TextStyle(fontSize: 15.0),
+                  CustomTextField(
+                    label: "Name",
+                    domain: "이름",
                     controller: nameController,
-                    decoration: InputDecoration(
-                      label: Text("Name"),
-                      border: OutlineInputBorder(),
-                      helperText: "이름을 입력하세요.",
-                      counterText: "입력길이: ${nameController.text.length}",
-                      errorText: nameValidator.isInvalid ? nameValidator.error : null,
-                    ),
+                    validator: nameValidator,
                   ),
                   SizedBox(height: 10),
-                  TextField(
-                    style: TextStyle(fontSize: 15.0),
+                  CustomTextField(
+                    label: "Phone",
+                    domain: "전화번호",
                     controller: phoneController,
-                    decoration: InputDecoration(
-                      label: Text("Phone"),
-                      border: OutlineInputBorder(),
-                      helperText: "전화번호를 입력하세요.",
-                      counterText: "입력길이: ${phoneController.text.length}",
-                      errorText: phoneValidator.isInvalid ? phoneValidator.error : null,
-                    ),
+                    validator: phoneValidator,
                   ),
                   SizedBox(height: 10),
-                  TextField(
-                    style: TextStyle(fontSize: 15.0),
+                  CustomTextField(
+                    label: "Email",
+                    domain: "이메일",
                     controller: emailController,
-                    decoration: InputDecoration(
-                      label: Text("Email"),
-                      border: OutlineInputBorder(),
-                      helperText: "이메일을 입력하세요.",
-                      counterText: "입력길이: ${emailController.text.length}",
-                      errorText: emailValidator.isInvalid ? emailValidator.error : null,
-                    ),
+                    validator: emailValidator,
                   ),
                   SizedBox(height: 10),
                 ],
