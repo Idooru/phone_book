@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_book/core/themes/theme_data.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:phone_book/presentation/pages/phone_book.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: themeData,
       home: PhoneBookPage(),
     );
   }

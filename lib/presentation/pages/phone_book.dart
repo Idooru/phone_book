@@ -73,8 +73,6 @@ class PhoneBookPage extends StatelessWidget {
           width: 65,
           height: 65,
           child: FloatingActionButton(
-            backgroundColor: Colors.green[600],
-            shape: CircleBorder(),
             child: Icon(
               Icons.add,
               color: Colors.white,
