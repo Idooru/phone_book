@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:phone_book/core/utils/get_it_initializor.dart';
 import 'package:phone_book/domain/entities/user.dart';
+import 'package:phone_book/domain/service/phonebook_service.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:phone_book/presentation/widgets/add_phone_book.dart';
 import 'package:phone_book/presentation/widgets/edit_phone_book.dart';
 import 'package:provider/provider.dart';
 
 class PhoneBookPage extends StatelessWidget {
-  const PhoneBookPage({super.key});
+  final PhonebookService phonebookService = locator<PhonebookService>();
+
+  PhoneBookPage({super.key});
 
   void pressAdd(BuildContext context, PhonebookProvider phonebook) {
     showDialog(
@@ -63,10 +67,10 @@ class PhoneBookPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    phonebookService.insertAlltUser(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("phone book"),
-      ),
+      appBar: AppBar(title: Text("phone book")),
       floatingActionButton: Align(
         alignment: Alignment(1.0, 1.07),
         child: SizedBox(
