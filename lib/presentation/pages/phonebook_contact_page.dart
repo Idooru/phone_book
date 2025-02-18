@@ -7,10 +7,10 @@ import 'package:phone_book/presentation/widgets/add_phonebook_dialog.dart';
 import 'package:phone_book/presentation/widgets/edit_phonebook_dialog.dart';
 import 'package:provider/provider.dart';
 
-class PhoneBookPage extends StatelessWidget {
+class PhonebookContactPage extends StatelessWidget {
   final PhonebookService phonebookService = locator<PhonebookService>();
 
-  PhoneBookPage({super.key});
+  PhonebookContactPage({super.key});
 
   void pressAdd(BuildContext context, PhonebookProvider phonebook) {
     showDialog(
@@ -70,22 +70,18 @@ class PhoneBookPage extends StatelessWidget {
     phonebookService.insertAlltUser(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text("phone book")),
-      floatingActionButton: Align(
-        alignment: Alignment(1.0, 1.07),
-        child: SizedBox(
-          width: 65,
-          height: 65,
-          child: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 40,
-            ),
-            onPressed: () {
-              pressAdd(context, context.read<PhonebookProvider>());
-            },
+      floatingActionButton: SizedBox(
+        width: 65,
+        height: 65,
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 40,
           ),
+          onPressed: () {
+            pressAdd(context, context.read<PhonebookProvider>());
+          },
         ),
       ),
       body: Column(
