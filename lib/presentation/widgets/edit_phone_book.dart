@@ -76,9 +76,9 @@ class EditPhoneBookState extends State<EditPhoneBookDialog> {
     int index = widget.allUser.indexWhere((User userParam) => userParam.name == user.name);
 
     User newUser = User(
-      nameController.text,
-      phoneController.text,
-      emailController.text,
+      name: nameController.text,
+      phone: phoneController.text,
+      email: emailController.text,
     );
 
     phonebook.updateUsers(index, newUser);

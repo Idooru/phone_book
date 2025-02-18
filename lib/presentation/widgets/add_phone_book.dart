@@ -63,9 +63,9 @@ class AddPhoneBookDialogState extends State<AddPhoneBookDialog> {
 
   void pressSubmit(PhonebookProvider phonebook) {
     User newUser = User(
-      nameController.text,
-      phoneController.text,
-      emailController.text,
+      name: nameController.text,
+      phone: phoneController.text,
+      email: emailController.text,
     );
 
     phonebook.createUser(newUser);
