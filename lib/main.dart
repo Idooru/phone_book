@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:phone_book/core/themes/theme_data.dart';
+import 'package:phone_book/core/utils/get_it_initializor.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:phone_book/presentation/pages/phone_book.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  initLocator();
   runApp(
     MultiProvider(
       providers: [
