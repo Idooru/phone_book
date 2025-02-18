@@ -28,8 +28,7 @@ class _PhonebookMainPageState extends State<PhonebookMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("phone book")),
-      body: pages.elementAt(selectedIndex),
+      body: SafeArea(child: pages.elementAt(selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: [
