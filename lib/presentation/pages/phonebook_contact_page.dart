@@ -5,6 +5,7 @@ import 'package:phone_book/domain/service/phonebook_service.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
 import 'package:phone_book/presentation/widgets/add_phonebook_dialog.dart';
 import 'package:phone_book/presentation/widgets/edit_phonebook_dialog.dart';
+import 'package:phone_book/presentation/widgets/search_contact_widget.dart';
 import 'package:provider/provider.dart';
 
 class PhonebookContactPage extends StatelessWidget {
@@ -65,6 +66,19 @@ class PhonebookContactPage extends StatelessWidget {
     );
   }
 
+  int calculateCount(PhonebookProvider phonebook) {
+    if (phonebook.isSearched && phonebook.searchedUsers.isEmpty) {
+      // 검색중이긴 하나 검색한 초성으로 사용자를 찾을 수 없을 때
+      return 1;
+    } else if (phonebook.isSearched) {
+      // 검색중이면서 검색한 초성의 사용자가 존재함
+      return phonebook.searchedUsers.length;
+    } else {
+      // 아직 검색을 시도하지 않음
+      return phonebook.users.length;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     phonebookService.insertAlltUser(context);
@@ -84,16 +98,36 @@ class PhonebookContactPage extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Container(height: 5, color: Colors.green),
-          Expanded(
-            child: Consumer<PhonebookProvider>(
-              builder: (BuildContext context, PhonebookProvider phonebook, Widget? child) {
-                return ListView.separated(
-                  itemCount: phonebook.users.length,
-                  itemBuilder: (context, index) {
-                    User user = phonebook.users[index];
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.green,
+            expandedHeight: 135,
+            pinned: true,
+            floating: true,
+            snap: true,
+            centerTitle: false,
+            leading: Icon(Icons.contact_page, color: Colors.white),
+            title: Text("전화번호부", style: TextStyle(color: Colors.white)),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(80),
+              child: SearchContactWidget(),
+            ),
+          ),
+          Consumer<PhonebookProvider>(
+            builder: (BuildContext context, PhonebookProvider phonebook, Widget? child) {
+              return SliverFixedExtentList(
+                itemExtent: 70.0, // 리스트 항목의 고정 높이 설정
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    List<User> users = phonebook.isSearched ? phonebook.searchedUsers : phonebook.users;
+
+                    if (users.isEmpty) {
+                      return Center(child: Text("해당 사용자를 찾을 수 없습니다."));
+                    }
+
+                    User user = users[index];
+
                     return ListTile(
                       leading: CircleAvatar(
                         radius: 25,
@@ -112,16 +146,11 @@ class PhonebookContactPage extends StatelessWidget {
                       },
                     );
                   },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 5,
-                      color: Colors.grey[300],
-                    );
-                  },
-                );
-              },
-            ),
-          )
+                  childCount: calculateCount(phonebook),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phone_book/core/utils/get_it_initializor.dart';
+import 'package:phone_book/domain/entities/user.dart';
 import 'package:phone_book/domain/repository/user_repository.dart';
 import 'package:phone_book/domain/service/phonebook_service.dart';
 import 'package:phone_book/presentation/state/phonebook_provider.dart';
@@ -16,5 +17,11 @@ class PhonebookServiceImpl implements PhonebookService {
     ListUserJson userJson = await userRepository.fetchJson();
 
     userRepository.inserAlltUser(userJson, phonebookProvider);
+  }
+
+  @override
+  void searchUser(PhonebookProvider phonebook, String search) {
+    List<User> searchedUsers = userRepository.filterUserWithSearch(search, phonebookProvider);
+    userRepository.updateUserList(searchedUsers, phonebook);
   }
 }
