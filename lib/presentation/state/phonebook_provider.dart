@@ -12,20 +12,26 @@ class PhonebookProvider extends ChangeNotifier {
   }
 
   void createUser(User newUser) {
+    if (_isSearched) {
+      _searchedUsers = [..._searchedUsers, newUser];
+    }
     _users = [..._users, newUser];
-    _searchedUsers = [..._searchedUsers, newUser];
     notifyListeners();
   }
 
   void updateUsers(int index, User newUser) {
+    if (_isSearched) {
+      _searchedUsers[index] = newUser;
+    }
     _users[index] = newUser;
-    _searchedUsers[index] = newUser;
     notifyListeners();
   }
 
   void deleteUser(User deleteUser) {
+    if (_isSearched) {
+      _searchedUsers = _searchedUsers.where((User user) => user != deleteUser).toList();
+    }
     _users = _users.where((User user) => user != deleteUser).toList();
-    _searchedUsers = _searchedUsers.where((User user) => user != deleteUser).toList();
     notifyListeners();
   }
 
